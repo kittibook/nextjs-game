@@ -1,0 +1,8 @@
+{
+  "/(Page)/admin/dataset/create/page": "app/(Page)/admin/dataset/create/page.js",
+  "/(Page)/admin/dataset/page": "app/(Page)/admin/dataset/page.js",
+  "/(Page)/admin/page": "app/(Page)/admin/page.js",
+  "/(Page)/admin/manageuser/page": "app/(Page)/admin/manageuser/page.js",
+  "/(Page)/admin/manageadmin/page": "app/(Page)/admin/manageadmin/page.js",
+  "/(Page)/admin/analyze/page": "app/(Page)/admin/analyze/page.js"
+}
