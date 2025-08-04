@@ -6,41 +6,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(Page)/admin/dataset/create/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/dataset/create/page.css",
-      "static/chunks/app/(Page)/admin/dataset/create/page.js"
-    ],
-    "/(Page)/admin/dataset/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/dataset/page.css",
-      "static/chunks/app/(Page)/admin/dataset/page.js"
-    ],
-    "/(Page)/admin/analyze/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/analyze/page.css",
-      "static/chunks/app/(Page)/admin/analyze/page.js"
-    ],
     "/(Page)/admin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/(Page)/admin/page.css",
       "static/chunks/app/(Page)/admin/page.js"
-    ],
-    "/(Page)/admin/manageuser/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/manageuser/page.css",
-      "static/chunks/app/(Page)/admin/manageuser/page.js"
-    ],
-    "/(Page)/admin/manageadmin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/manageadmin/page.css",
-      "static/chunks/app/(Page)/admin/manageadmin/page.js"
     ]
   }
 }

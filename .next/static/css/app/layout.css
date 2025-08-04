@@ -302,51 +302,6 @@
       }
     }
   }
-  .\@container {
-    container-type: inline-size;
-  }
-  .modal {
-    pointer-events: none;
-    visibility: hidden;
-    position: fixed;
-    inset: calc(0.25rem * 0);
-    margin: calc(0.25rem * 0);
-    display: grid;
-    height: 100%;
-    max-height: none;
-    width: 100%;
-    max-width: none;
-    align-items: center;
-    justify-items: center;
-    background-color: transparent;
-    padding: calc(0.25rem * 0);
-    color: inherit;
-    overflow-x: hidden;
-    transition: translate 0.3s ease-out, visibility 0.3s allow-discrete, background-color 0.3s ease-out, opacity 0.1s ease-out;
-    overflow-y: hidden;
-    overscroll-behavior: contain;
-    z-index: 999;
-    &::backdrop {
-      display: none;
-    }
-    &.modal-open, &[open], &:target {
-      pointer-events: auto;
-      visibility: visible;
-      opacity: 100%;
-      background-color: oklch(0% 0 0/ 0.4);
-      .modal-box {
-        translate: 0 0;
-        scale: 1;
-        opacity: 1;
-      }
-    }
-    @starting-style {
-      &.modal-open, &[open], &:target {
-        visibility: hidden;
-        opacity: 0%;
-      }
-    }
-  }
   .tooltip {
     position: relative;
     display: inline-block;
@@ -753,23 +708,6 @@
       outline: none;
     }
   }
-  .validator {
-    &:user-valid, &:has(:user-valid) {
-      &, &:focus, &:checked, &[aria-checked="true"], &:focus-within {
-        --input-color: var(--color-success);
-      }
-    }
-    &:user-invalid, &:has(:user-invalid), &[aria-invalid] {
-      &, &:focus, &:checked, &[aria-checked="true"], &:focus-within {
-        --input-color: var(--color-error);
-      }
-      & ~ .validator-hint {
-        visibility: visible;
-        display: block;
-        color: var(--color-error);
-      }
-    }
-  }
   .collapse {
     visibility: collapse;
   }
@@ -874,211 +812,6 @@
       top: calc(0.25rem * 4);
       bottom: auto;
       --toast-y: 0;
-    }
-  }
-  .toggle {
-    border: var(--border) solid currentColor;
-    color: var(--input-color);
-    position: relative;
-    display: inline-grid;
-    flex-shrink: 0;
-    cursor: pointer;
-    appearance: none;
-    place-content: center;
-    vertical-align: middle;
-    webkit-user-select: none;
-    user-select: none;
-    grid-template-columns: 0fr 1fr 1fr;
-    --radius-selector-max: calc(
-    var(--radius-selector) + var(--radius-selector) + var(--radius-selector)
-  );
-    border-radius: calc( var(--radius-selector) + min(var(--toggle-p), var(--radius-selector-max)) + min(var(--border), var(--radius-selector-max)) );
-    padding: var(--toggle-p);
-    box-shadow: 0 1px color-mix(in oklab, currentColor calc(var(--depth) * 10%), #0000) inset;
-    transition: color 0.3s, grid-template-columns 0.2s;
-    --input-color: color-mix(in oklab, var(--color-base-content) 50%, #0000);
-    --toggle-p: calc(var(--size) * 0.125);
-    --size: calc(var(--size-selector, 0.25rem) * 6);
-    width: calc((var(--size) * 2) - (var(--border) + var(--toggle-p)) * 2);
-    height: var(--size);
-    > * {
-      z-index: 1;
-      grid-column: span 1 / span 1;
-      grid-column-start: 2;
-      grid-row-start: 1;
-      height: 100%;
-      cursor: pointer;
-      appearance: none;
-      background-color: transparent;
-      padding: calc(0.25rem * 0.5);
-      transition: opacity 0.2s, rotate 0.4s;
-      border: none;
-      &:focus {
-        --tw-outline-style: none;
-        outline-style: none;
-        @media (forced-colors: active) {
-          outline: 2px solid transparent;
-          outline-offset: 2px;
-        }
-      }
-      &:nth-child(2) {
-        color: var(--color-base-100);
-        rotate: 0deg;
-      }
-      &:nth-child(3) {
-        color: var(--color-base-100);
-        opacity: 0%;
-        rotate: -15deg;
-      }
-    }
-    &:has(:checked) {
-      > :nth-child(2) {
-        opacity: 0%;
-        rotate: 15deg;
-      }
-      > :nth-child(3) {
-        opacity: 100%;
-        rotate: 0deg;
-      }
-    }
-    &:before {
-      position: relative;
-      inset-inline-start: calc(0.25rem * 0);
-      grid-column-start: 2;
-      grid-row-start: 1;
-      aspect-ratio: 1 / 1;
-      height: 100%;
-      border-radius: var(--radius-selector);
-      background-color: currentColor;
-      translate: 0;
-      --tw-content: "";
-      content: var(--tw-content);
-      transition: background-color 0.1s, translate 0.2s, inset-inline-start 0.2s;
-      box-shadow: 0 -1px oklch(0% 0 0 / calc(var(--depth) * 0.1)) inset, 0 8px 0 -4px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset, 0 1px color-mix(in oklab, currentColor calc(var(--depth) * 10%), #0000);
-      background-size: auto, calc(var(--noise) * 100%);
-      background-image: none, var(--fx-noise);
-    }
-    @media (forced-colors: active) {
-      &:before {
-        outline-style: var(--tw-outline-style);
-        outline-width: 1px;
-        outline-offset: calc(1px * -1);
-      }
-    }
-    @media print {
-      &:before {
-        outline: 0.25rem solid;
-        outline-offset: -1rem;
-      }
-    }
-    &:focus-visible, &:has(:focus-visible) {
-      outline: 2px solid currentColor;
-      outline-offset: 2px;
-    }
-    &:checked, &[aria-checked="true"], &:has(> input:checked) {
-      grid-template-columns: 1fr 1fr 0fr;
-      background-color: var(--color-base-100);
-      --input-color: var(--color-base-content);
-      &:before {
-        background-color: currentColor;
-      }
-      @starting-style {
-        &:before {
-          opacity: 0;
-        }
-      }
-    }
-    &:indeterminate {
-      grid-template-columns: 0.5fr 1fr 0.5fr;
-    }
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 30%;
-      &:before {
-        background-color: transparent;
-        border: var(--border) solid currentColor;
-      }
-    }
-  }
-  .\!input {
-    cursor: text !important;
-    border: var(--border) solid #0000 !important;
-    position: relative !important;
-    display: inline-flex !important;
-    flex-shrink: 1 !important;
-    appearance: none !important;
-    align-items: center !important;
-    gap: calc(0.25rem * 2) !important;
-    background-color: var(--color-base-100) !important;
-    padding-inline: calc(0.25rem * 3) !important;
-    vertical-align: middle !important;
-    white-space: nowrap !important;
-    width: clamp(3rem, 20rem, 100%) !important;
-    height: var(--size) !important;
-    font-size: 0.875rem !important;
-    border-start-start-radius: var(--join-ss, var(--radius-field)) !important;
-    border-start-end-radius: var(--join-se, var(--radius-field)) !important;
-    border-end-start-radius: var(--join-es, var(--radius-field)) !important;
-    border-end-end-radius: var(--join-ee, var(--radius-field)) !important;
-    border-color: var(--input-color) !important;
-    box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) inset, 0 -1px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset !important;
-    --size: calc(var(--size-field, 0.25rem) * 10) !important;
-    --input-color: color-mix(in oklab, var(--color-base-content) 20%, #0000) !important;
-    &:where(input) {
-      display: inline-flex !important;
-    }
-    :where(input) {
-      display: inline-flex !important;
-      height: 100% !important;
-      width: 100% !important;
-      appearance: none !important;
-      background-color: transparent !important;
-      border: none !important;
-      &:focus, &:focus-within {
-        --tw-outline-style: none !important;
-        outline-style: none !important;
-        @media (forced-colors: active) {
-          outline: 2px solid transparent !important;
-          outline-offset: 2px !important;
-        }
-      }
-    }
-    :where(input[type="date"]) {
-      display: inline-block !important;
-    }
-    &:focus, &:focus-within {
-      --input-color: var(--color-base-content) !important;
-      box-shadow: 0 1px color-mix(in oklab, var(--input-color) calc(var(--depth) * 10%), #0000) !important;
-      outline: 2px solid var(--input-color) !important;
-      outline-offset: 2px !important;
-      isolation: isolate !important;
-      z-index: 1 !important;
-    }
-    &:has(> input[disabled]), &:is(:disabled, [disabled]) {
-      cursor: not-allowed !important;
-      border-color: var(--color-base-200) !important;
-      background-color: var(--color-base-200) !important;
-      color: color-mix(in oklab, var(--color-base-content) 40%, transparent) !important;
-      &::placeholder {
-        color: color-mix(in oklab, var(--color-base-content) 20%, transparent) !important;
-      }
-      box-shadow: none !important;
-    }
-    &:has(> input[disabled]) > input[disabled] {
-      cursor: not-allowed !important;
-    }
-    &::-webkit-date-and-time-value {
-      text-align: inherit !important;
-    }
-    &[type="number"] {
-      &::-webkit-inner-spin-button {
-        margin-block: calc(0.25rem * -3) !important;
-        margin-inline-end: calc(0.25rem * -3) !important;
-      }
-    }
-    &::-webkit-calendar-picker-indicator {
-      position: absolute !important;
-      inset-inline-end: 0.75em !important;
     }
   }
   .input {
@@ -1600,21 +1333,6 @@
       backface-visibility: visible;
     }
   }
-  .avatar {
-    position: relative;
-    display: inline-flex;
-    vertical-align: middle;
-    & > div {
-      display: block;
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-    }
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-  }
   .checkbox {
     border: var(--border) solid var(--input-color, color-mix(in oklab, var(--color-base-content) 20%, #0000));
     position: relative;
@@ -1803,12 +1521,6 @@
       height: calc(0.25rem * 8);
     }
   }
-  .drawer {
-    position: relative;
-    display: grid;
-    width: 100%;
-    grid-auto-columns: max-content auto;
-  }
   .progress {
     position: relative;
     height: calc(0.25rem * 2);
@@ -1927,9 +1639,6 @@
       cursor: not-allowed;
     }
   }
-  .isolate {
-    isolation: isolate;
-  }
   .stack {
     display: inline-grid;
     grid-template-columns: 3px 4px 1fr 4px 3px;
@@ -2013,24 +1722,6 @@
   .col-span-1 {
     grid-column: span 1 / span 1;
   }
-  .\!container {
-    width: 100% !important;
-    @media (width >= 40rem) {
-      max-width: 40rem !important;
-    }
-    @media (width >= 48rem) {
-      max-width: 48rem !important;
-    }
-    @media (width >= 64rem) {
-      max-width: 64rem !important;
-    }
-    @media (width >= 80rem) {
-      max-width: 80rem !important;
-    }
-    @media (width >= 96rem) {
-      max-width: 96rem !important;
-    }
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -2047,31 +1738,6 @@
     }
     @media (width >= 96rem) {
       max-width: 96rem;
-    }
-  }
-  .divider {
-    display: flex;
-    height: calc(0.25rem * 4);
-    flex-direction: row;
-    align-items: center;
-    align-self: stretch;
-    white-space: nowrap;
-    margin: var(--divider-m, 1rem 0);
-    --divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
-    &:before, &:after {
-      content: "";
-      height: calc(0.25rem * 0.5);
-      width: 100%;
-      flex-grow: 1;
-      background-color: var(--divider-color);
-    }
-    @media print {
-      &:before, &:after {
-        border: 0.5px solid;
-      }
-    }
-    &:not(:empty) {
-      gap: calc(0.25rem * 4);
     }
   }
   .m-5 {
@@ -2261,14 +1927,6 @@
     height: var(--size);
     min-width: var(--size);
   }
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    --tabs-height: auto;
-    --tabs-direction: row;
-    height: var(--tabs-height);
-    flex-direction: var(--tabs-direction);
-  }
   .footer {
     display: grid;
     width: 100%;
@@ -2428,32 +2086,11 @@
   .hidden {
     display: none;
   }
-  .inline {
-    display: inline;
-  }
   .inline-block {
     display: inline-block;
   }
-  .inline-flex {
-    display: inline-flex;
-  }
   .table {
     display: table;
-  }
-  .table-cell {
-    display: table-cell;
-  }
-  .table-footer-group {
-    display: table-footer-group;
-  }
-  .table-header-group {
-    display: table-header-group;
-  }
-  .table-row {
-    display: table-row;
-  }
-  .table-row-group {
-    display: table-row-group;
   }
   .h-2 {
     height: calc(var(--spacing) * 2);
@@ -2470,20 +2107,8 @@
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
-  .h-36 {
-    height: calc(var(--spacing) * 36);
-  }
   .h-64 {
     height: calc(var(--spacing) * 64);
-  }
-  .h-\[50px\] {
-    height: 50px;
-  }
-  .h-\[200px\] {
-    height: 200px;
-  }
-  .h-\[300px\] {
-    height: 300px;
   }
   .h-\[500px\] {
     height: 500px;
@@ -2524,9 +2149,6 @@
   .w-\[50\%\] {
     width: 50%;
   }
-  .w-\[50px\] {
-    width: 50px;
-  }
   .w-\[70\%\] {
     width: 70%;
   }
@@ -2550,15 +2172,6 @@
   }
   .flex-shrink {
     flex-shrink: 1;
-  }
-  .shrink {
-    flex-shrink: 1;
-  }
-  .flex-grow {
-    flex-grow: 1;
-  }
-  .grow {
-    flex-grow: 1;
   }
   .border-collapse {
     border-collapse: collapse;
@@ -2757,9 +2370,6 @@
   .bg-main\/30 {
     background-color: color-mix(in oklab, var(--color-main) 30%, transparent);
   }
-  .bg-main\/40 {
-    background-color: color-mix(in oklab, var(--color-main) 40%, transparent);
-  }
   .bg-purple-50 {
     background-color: var(--color-purple-50);
   }
@@ -2772,10 +2382,6 @@
   }
   .from-main\/20 {
     --tw-gradient-from: color-mix(in oklab, var(--color-main) 20%, transparent);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
-  .from-main\/30 {
-    --tw-gradient-from: color-mix(in oklab, var(--color-main) 30%, transparent);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .from-sky-200 {
@@ -2910,14 +2516,8 @@
   .text-white {
     color: var(--color-white);
   }
-  .capitalize {
-    text-transform: capitalize;
-  }
   .lowercase {
     text-transform: lowercase;
-  }
-  .uppercase {
-    text-transform: uppercase;
   }
   .italic {
     font-style: italic;
@@ -2925,9 +2525,6 @@
   .ordinal {
     --tw-ordinal: ordinal;
     font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
-  }
-  .overline {
-    text-decoration-line: overline;
   }
   .underline {
     text-decoration-line: underline;
@@ -3055,16 +2652,6 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
-    }
-  }
-  .sm\:h-\[100px\] {
-    @media (width >= 40rem) {
-      height: 100px;
-    }
-  }
-  .sm\:w-\[100px\] {
-    @media (width >= 40rem) {
-      width: 100px;
     }
   }
   .sm\:text-sm {
