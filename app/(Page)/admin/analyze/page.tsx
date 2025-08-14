@@ -13,6 +13,8 @@ import phayao03 from '@/app/Assets/phayao03.json';
 import phayao04 from '@/app/Assets/phayao04.json';
 import type { Feature, FeatureCollection } from 'geojson';
 import AnalyzeMap from "@/app/Components/UI/admin/analyze/analyzeMap";
+import { useEffect, useState } from "react";
+import { getAuth } from "@/app/Services/api.service";
 const Map = dynamic(() => import('@/app/Components/UI/admin/analyze/map'), { ssr: false });
 
 const geoData: FeatureCollection = {
@@ -38,7 +40,32 @@ const geoDataphayao04: FeatureCollection = {
   type: 'FeatureCollection',
   features: phayao04.features as Feature[], //  ปง
 };
+
+interface DataSet {
+  Dataset_id: number,
+  Name: string
+}
 export default function AdminAnalyze() {
+
+  const [dataSet, setDataSet] = useState<DataSet[] | []>([])
+  const [dataSetSelect, setDataSetSelect] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const res = await getAuth('/admin/analyze/namedataset')
+      if (res.success) {
+        setDataSet(res.dataSet)
+        console.log(res.dataSet)
+      }
+    } catch (error) {
+
+    }
+  }
+
   return (
     <LayoutAdmin>
       <div className="min-h-screen min-w-[100%] flex flex-col pt-15 pl-5">
@@ -48,19 +75,23 @@ export default function AdminAnalyze() {
         <select
           // disabled
           id="countries_disabled"
+          value={dataSetSelect ?? 0}
+          onChange={ e => setDataSetSelect(Number(e.target.value))}
           className=" w-[30%] bg-btn-dashboard border border-main-2 text-main  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-5"
-          defaultValue={0} // ใช้ defaultValue แทน selected
+          // defaultValue={0} // ใช้ defaultValue แทน selected
         >
           <option value={0}>เลือกชุดข้อมูล</option>
-          <option value={1}>ชุดข้อมูล 1</option>
-          <option value={2}>ชุดข้อมูล 2</option>
-          <option value={3}>ชุดข้อมูล 3</option>
-          <option value={4}>ชุดข้อมูล 4</option>
+          {dataSet.length > 0 ? <>
+            {dataSet.map((v, i) => (
+              <option key={v.Dataset_id} value={v.Dataset_id}>{v.Name}</option>
+
+            ))}
+          </> : ''}
 
         </select>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
           <div className="col-span-1  transition-all duration-300 p-9 lg:border-r border-[#C8CBD9] w-full  min-h-72 ">
-            <UserChart />
+            <UserChart dataSetId={dataSetSelect} />
           </div>
           <div className="col-span-1 lg:col-span-2 lg:row-span-2 transition-all duration-300 p-9  w-full  min-h-72">
             <Map
@@ -76,7 +107,7 @@ export default function AdminAnalyze() {
 
           </div>
           <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <ScoreChart />
+            <ScoreChart dataSetId={dataSetSelect}  />
           </div>
           <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
             <RiskChart />

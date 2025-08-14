@@ -1,40 +1,33 @@
+import { getAuth } from "@/app/Services/api.service";
+import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
+interface Prop {
+    dataSetId: number | null
+}
 
-export default function ScoreChart() {
+interface Score {
+    name: string, 
+    average: number
+}
+export default function ScoreChart({ dataSetId }: Prop) {
+    const [score, setScore] = useState<Score[] | []>([])
 
-    const data03 = [
-        {
-            "name": "วาดหกเหลี่ยม",
-            "uv": 4,
-            "pv": 2
-        },
-        {
-            "name": "จับคู่สี",
-            "uv": 3,
-            "pv": 1
-        },
-        {
-            "name": "จับคู่เลข",
-            "uv": 2,
-            "pv": 3
-        },
-        {
-            "name": "รูปสัตว์",
-            "uv": 3,
-            "pv": 2
-        },
-        {
-            "name": "เสียงสัตว์",
-            "uv": 2,
-            "pv": 2
-        },
-        {
-            "name": "เสียงธรรมชาติ",
-            "uv": 4,
-            "pv": 5
-        },
-    ]
+    useEffect(() => {
+        fetchData()
+    }, [dataSetId])
+
+    const fetchData = async () => {
+        try {
+            const res = await getAuth('/admin/analyze/score/' + dataSetId)
+            if (res.success) {
+                // console.log(res)
+                setScore(res.averages)
+            }
+        } catch (error) {
+
+        }
+    }
 
     return (
         <>
@@ -50,14 +43,14 @@ export default function ScoreChart() {
             </div>
             <div className="flex justify-between items-center w-full">
                 <ResponsiveContainer width="100%" height={250}>
-                    <BarChart width={730} height={250} data={data03}>
+                    <BarChart width={730} height={250} data={score}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="pv" name='1 คะแนน' fill="#8884d8" />
-                        <Bar dataKey="uv" name='2 คะแนน' fill="#82ca9d" />
+                        <Bar dataKey="average" name='ค่าเฉลี่ย' fill="#8884d8" />
+                        {/* <Bar dataKey="uv" name='2 คะแนน' fill="#82ca9d" /> */}
                     </BarChart>
                 </ResponsiveContainer>
 

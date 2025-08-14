@@ -1,40 +1,26 @@
+import { getAuth } from "@/app/Services/api.service";
+import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
+interface Data {
+    average: number
+    name: string
+}
 
 export default function ScoreChart() {
+    const [data, setData] = useState<Data[] | []>([])
+    useEffect(() => {
+        fetchData()
+    }, [])
 
-    const data03 = [
-        {
-            "name": "วาดหกเหลี่ยม",
-            "uv": 4,
-            "pv": 2
-        },
-        {
-            "name": "จับคู่สี",
-            "uv": 3,
-            "pv": 1
-        },
-        {
-            "name": "จับคู่เลข",
-            "uv": 2,
-            "pv": 3
-        },
-        {
-            "name": "รูปสัตว์",
-            "uv": 3,
-            "pv": 2
-        },
-        {
-            "name": "เสียงสัตว์",
-            "uv": 2,
-            "pv": 2
-        },
-        {
-            "name": "เสียงธรรมชาติ",
-            "uv": 4,
-            "pv": 5
-        },
-    ]
+    const fetchData = async () => {
+        try {
+            const res = await getAuth('/admin/dashboard/scoreaverage')
+            setData(res.averages)
+        } catch (error) {
+
+        }
+    }
 
     return (
         <>
@@ -50,14 +36,14 @@ export default function ScoreChart() {
             </div>
             <div className="flex justify-between items-center w-full">
                 <ResponsiveContainer width="100%" height={250}>
-                    <BarChart width={730} height={250} data={data03}>
+                    <BarChart width={730} height={250} data={data}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="pv" name='1 คะแนน' fill="#8884d8" />
-                        <Bar dataKey="uv" name='2 คะแนน' fill="#82ca9d" />
+                        <Bar dataKey="average" name='คะแนน' fill="#8884d8" />
+                        {/* <Bar dataKey="uv" name='2 คะแนน' fill="#82ca9d" /> */}
                     </BarChart>
                 </ResponsiveContainer>
 

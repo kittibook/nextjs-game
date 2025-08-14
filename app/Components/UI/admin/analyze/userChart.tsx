@@ -1,45 +1,54 @@
+import { getAuth } from "@/app/Services/api.service";
+import { useEffect, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 // กราฟ ผู้เข้าร่วมการประเมิน
-// กราฟ ผู้เข้าร่วมการประเมิน
-// กราฟ ผู้เข้าร่วมการประเมิน
-// กราฟ ผู้เข้าร่วมการประเมิน
-// กราฟ ผู้เข้าร่วมการประเมิน
-// กราฟ ผู้เข้าร่วมการประเมิน
+interface Data {
+    DatasetId: number
+    DatasetName: string
+    userF: number
+    userM: number
+}
+interface Prop {
+    dataSetId: number | null
+}
+export default function UserChart({ dataSetId }: Prop) {
 
-export default function UserChart() {
-    const data = [
-        {
-            "name": "สัปดาห์ 1",
-            "uv": 2,
-            "pv": 1,
-        },
-        {
-            "name": "สัปดาห์ 2",
-            "uv": 1,
-            "pv": 2,
-        },
-        {
-            "name": "สัปดาห์ 3",
-            "uv": 2,
-            "pv": 2,
-        },
-        {
-            "name": "สัปดาห์ 4",
-            "uv": 4,
-            "pv": 3,
-        },
-        {
-            "name": "สัปดาห์ 5",
-            "uv": 2,
-            "pv": 4,
-        },
-        {
-            "name": "สัปดาห์ 6",
-            "uv": 2,
-            "pv": 3,
+    const [data, setData] = useState<Data[] | []>([])
+    useEffect(() => {
+        fetchData()
+    }, [dataSetId])
+
+    const fetchData = async () => {
+        try {
+            const res = await getAuth('/admin/analyze/user/' + dataSetId)
+            console.log(res)
+            if (res.success) {
+                let newData = res.data as Data[]
+                if (newData.length === 1) {
+                    const start: Data = {
+                        DatasetId: 0,
+                        DatasetName: "",
+                        userF: 0,
+                        userM: 0
+                    }
+                    newData = [start, ...newData]
+                    const end: Data = {
+                        DatasetId: 0,
+                        DatasetName: "",
+                        userF: 0,
+                        userM: 0
+                    }
+                    newData = [...newData, end]
+                }
+
+                setData(newData)
+
+            }
+        } catch (error) {
+
         }
-    ]
+    }
     return (
 
         <>
@@ -58,19 +67,19 @@ export default function UserChart() {
             <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="DatasetName" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
                     <Line
                         type="monotone"
-                        dataKey="pv"
+                        dataKey="userM"
                         name="ชาย"
                         stroke="#8884d8"
                     />
                     <Line
                         type="monotone"
-                        dataKey="uv"
+                        dataKey="userF"
                         name="หญิง"
                         stroke="#82ca9d"
                     />
