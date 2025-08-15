@@ -1,4 +1,6 @@
 {
+  "/page": "app/page.js",
   "/(Page)/admin/page": "app/(Page)/admin/page.js",
-  "/page": "app/page.js"
+  "/(Page)/admin/dataset/page": "app/(Page)/admin/dataset/page.js",
+  "/(Page)/admin/dataset/create/page": "app/(Page)/admin/dataset/create/page.js"
 }

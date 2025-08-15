@@ -31,7 +31,7 @@ export default function MapDataSet() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    console.log(position.coords);
+                    // console.log(position.coords);
                     localStorage.setItem('latitude', position.coords.latitude.toString());
                     localStorage.setItem('longitude', position.coords.longitude.toString());
                     setPosition({
@@ -40,7 +40,7 @@ export default function MapDataSet() {
                     });
                 },
                 (error) => {
-                    console.error("Geolocation error: ", error);
+                    // console.error("Geolocation error: ", error);
                     // หากเกิดข้อผิดพลาด เช่น ไม่สามารถดึงตำแหน่งได้
                 }
             );

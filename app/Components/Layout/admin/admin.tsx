@@ -5,6 +5,7 @@ import { HiChartPie, HiChartSquareBar, HiUser, HiUserCircle, HiClipboardList } f
 import { ReactNode } from "react";
 import { Poppins } from 'next/font/google';
 import NavBar from "@/app/Components/UI/admin/Navbar";
+import { ToastContainer } from 'react-toastify';
 import { usePathname } from "next/navigation";
 const poppins = Poppins({ subsets: ['latin'], weight: ['400'] });
 
@@ -51,7 +52,7 @@ export default function LayoutAdmin({ children }: { children: ReactNode }) {
             </div>
             <div className="flex-1 ml-12 md:ml-64 md:mt-0 md:m-0 ">
                 <div className="w-full bg-gray-50">{children}</div>
-                
+                <ToastContainer />
             </div>
         </div>
     )

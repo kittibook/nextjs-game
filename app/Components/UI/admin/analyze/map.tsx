@@ -2,67 +2,85 @@
 
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FeatureCollection } from 'geojson';
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, MultiPolygon, Polygon } from 'geojson';
+import thailand from '@/app/Assets/thailand.json'
+import { useEffect, useRef, useState } from 'react';
+import { getAuth } from '@/app/Services/api.service';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import { point as turfPoint } from '@turf/helpers';
+import L from 'leaflet';
 
-interface Props {
-    geoData01: FeatureCollection;
-    geoData02: FeatureCollection;
-    geoData03: FeatureCollection;
-    geoData04: FeatureCollection;
-    geoData05: FeatureCollection;
-    geoData06: FeatureCollection;
-    geoData07: FeatureCollection;
-    geoData08: FeatureCollection;
+interface Props { 
+    dataSetId: number | null 
+}
+interface LatLng { 
+    lat: number; 
+    lng: number 
 }
 
-export default function Map({ geoData01, geoData02, geoData03, geoData04, geoData05, geoData06, geoData07, geoData08 }: Props) {
+export default function Map({ dataSetId }: Props) {
+    const [position, setPosition] = useState<LatLng[]>([]);
+    const geoRef = useRef<L.GeoJSON>(null);
+
+    useEffect(() => {
+        (async () => {
+            const res = await getAuth('/admin/analyze/position/' + dataSetId);
+            const newPosition: LatLng[] = (res?.position ?? []).map((v: any) => ({
+                lat: Number(v?.latitude), lng: Number(v?.longitude)
+            }));
+            const cleaned = newPosition.filter(p =>
+                Number.isFinite(p.lat) && Number.isFinite(p.lng) &&
+                p.lat >= 5 && p.lat <= 21.5 && p.lng >= 97 && p.lng <= 106
+            );
+            setPosition(cleaned);
+        })();
+    }, [dataSetId]);
+
     const style = {
-        color: 'red',        // Border color
-        weight: 2,           // Border width
-        opacity: 1,          // Border opacity
-        fillColor: 'red',    // Fill color
-        fillOpacity: 0.5,    // Fill opacity
-    };
-    
-    const styleb = {
-        color: 'blue',       // Border color
-        weight: 2,           // Border width
-        opacity: 1,          // Border opacity
-        fillColor: 'blue',   // Fill color
-        fillOpacity: 0.5,    // Fill opacity
+        color: 'red', weight: 2, opacity: 0.5, fillColor: 'red', fillOpacity: 0.1,
     };
 
-    const style03 = {
-        color: '#6082d6',       // Border color
-        weight: 2,           // Border width
-        opacity: 1,          // Border opacity
-        fillColor: '#6082d6',   // Fill color
-        fillOpacity: 0.5,    // Fill opacity
-    };
+    // อัปเดต tooltip ทุกครั้งที่ position เปลี่ยน
+    useEffect(() => {
+        if (!geoRef.current) return;
+
+        geoRef.current.eachLayer((layer: any) => {
+            const feature = layer.feature as Feature<Polygon | MultiPolygon, GeoJsonProperties>;
+            if (!feature?.geometry) return;
+
+            const props = feature.properties as any;
+            const name = props?.NL_NAME_1 || props?.name || props?.PROV_NAMT || 'ไม่ทราบชื่อจังหวัด';
+
+            const count = position.reduce((acc, pt) => {
+                const inside = booleanPointInPolygon(turfPoint([pt.lng, pt.lat]), feature);
+                return acc + (inside ? 1 : 0);
+            }, 0);
+
+            if (count > 0) {
+                layer.bindTooltip(`${name} ${count} ท่าน`, {
+                    direction: 'top', sticky: true, permanent: true
+                });
+            } else {
+                layer.unbindTooltip();
+            }
+        });
+    }, [position]);
+
+
 
     return (
-        <>
-            <div className="flex justify-between items-center mb-10 ">
-                <div className="flex flex-col">
-                    <h2 className="text-lg font-semibold text-slate-700">ข้อมูลเชิงพื้นที่</h2>
-                    <h3 className="text-sm text-slate-500">
-                        วันที่ 1 ธันวาคม 2567 - 25 มกราคม 2568
-                    </h3>
-                </div>
-            </div>
-            <div className="flex justify-between items-center w-full ">
-                <MapContainer center={[19.273902, 100.226944]} zoom={9} style={{ height: '600px', width: '100%' }}>
-                    <TileLayer
-                        attribution='&copy; OpenStreetMap contributors'
-                        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                    />
-
-                    <GeoJSON data={geoData01} style={style} />
-                    <GeoJSON data={geoData02} style={styleb} />
-                    <GeoJSON data={geoData03} style={style03} />
-                    <GeoJSON data={geoData04} style={style03} />
-                </MapContainer>
-            </div>
-        </>
+        <div className="w-full">
+            <MapContainer center={[17.873902, 101.226944]} zoom={8} style={{ height: '1000px', width: '100%' }}>
+                <TileLayer
+                    attribution='&copy; OpenStreetMap contributors'
+                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                />
+                <GeoJSON
+                    ref={geoRef}                 // 👈 ถือ ref
+                    data={thailand as FeatureCollection}
+                    style={style}
+                />
+            </MapContainer>
+        </div>
     );
 }

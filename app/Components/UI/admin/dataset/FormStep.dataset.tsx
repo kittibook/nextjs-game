@@ -39,6 +39,7 @@ export function FormStepDataSet({
                     <div className="text-xl text-start p-2 w-full">ชื่อชุดข้อมูล</div>
                     <input
                         required
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                         type="text"
                         className="p-4 w-full rounded-2xl bg-main/20 focus:ring-2 ring-main/30 shadow-xl border-2 border-main"
@@ -52,6 +53,7 @@ export function FormStepDataSet({
                     <div className="text-xl text-start p-2 w-full">รายละเอียดชุดข้อมูล</div>
                     <textarea
                         required
+                        value={detail}
                         onChange={(e) => setDetail(e.target.value)}
                         className="p-4 w-full rounded-2xl bg-main/20 focus:ring-2 ring-main/30 shadow-xl border-2 border-main"
                         placeholder="รายละเอียดชุดข้อมูล"

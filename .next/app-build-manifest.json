@@ -6,6 +6,18 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/(Page)/admin/dataset/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(Page)/admin/dataset/page.css",
+      "static/chunks/app/(Page)/admin/dataset/page.js"
+    ],
+    "/(Page)/admin/dataset/create/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(Page)/admin/dataset/create/page.css",
+      "static/chunks/app/(Page)/admin/dataset/create/page.js"
+    ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

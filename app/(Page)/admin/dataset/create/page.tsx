@@ -5,6 +5,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import ProgressBarDataSet from "@/app/Components/UI/admin/dataset/ProgressBar.dataset";
 import { FormStepDataSet } from "@/app/Components/UI/admin/dataset/FormStep.dataset";
 import { PreviewCard } from "@/app/Components/UI/admin/dataset/PreviewCard.dataset";
+import { Bounce, toast } from "react-toastify";
+import { postAuth } from "@/app/Services/api.service";
+import { useRouter } from "next/navigation";
 
 export default function DataSetCreate() {
     const [level, setLevel] = useState<number>(1)
@@ -15,6 +18,7 @@ export default function DataSetCreate() {
     const [longitude, setLongitude] = useState<number | null>(null);
     const [startDate, setStartDate] = useState<Dayjs | null>(null);
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
+    const router = useRouter();
 
 
     const fetchLocationFromStorage = () => {
@@ -34,13 +38,53 @@ export default function DataSetCreate() {
         setLevel(level + 1)
     };
 
-    useEffect(() => {
-        console.log("Start Date updated:", startDate);
-    }, [startDate]);
+    const create = async () => {
+        try {
+            if (name === "" || detail === "" || startDate === null || endDate === null || latitude === null || longitude === null) {
+                return toast.warn('ข้อมูลไม่ครบถ้วน', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }
 
-    useEffect(() => {
-        console.log("End Date updated:", endDate);
-    }, [endDate]);
+            const body = {
+                Name: name,
+                details: detail,
+                dateStart: startDate,
+                dateEnd: endDate,
+                Position: {
+                    latitude: latitude.toString(),
+                    longitude: longitude.toString()
+                }
+            }
+            const res = await postAuth('/admin/dataset/', body)
+
+            if(res.success) {
+                toast.success('สร้างสำเร็จ', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+                router.push('/admin/dataset')
+            }
+
+        } catch (error) {
+
+        }
+    }
 
 
     return (
@@ -50,7 +94,7 @@ export default function DataSetCreate() {
                     <h1 className="text-lg font-medium text-[#1F384C]">สร้างชุดข้อมูล</h1>
                 </div>
                 <div className="flex justify-center items-center w-full ">
-                    <div className={`${ level > 4 ? "flex justify-center items-center bg-linear-to-b from-main/20" : "" } w-[90%] bg-bgnavbar-2 rounded-2xl flex`}>
+                    <div className={`${level > 4 ? "flex justify-center items-center bg-linear-to-b from-main/20" : ""} w-[90%] bg-bgnavbar-2 rounded-2xl flex`}>
                         <div className=" w-full lg:w-[50%] ">
                             <div className="m-5 flex justify-between"> </div>
                             <div className=" mx-5 px-20">
@@ -88,14 +132,14 @@ export default function DataSetCreate() {
 
                                     <div className="my-10 w-full flex justify-center items-center mt-52">
                                         {level > 1 ? (
-                                            <button onClick={() => setLevel(level - 1)} className="p-4  bg-main/4   0 rounded-2xl text-lx  w-[30%] mx-2 text-main hover:bg-main hover:text-white"> ย้อนกลับ </button>
+                                            <button onClick={() => setLevel(1)} className="p-4  bg-main/4   0 rounded-2xl text-lx  w-[30%] mx-2 text-main hover:bg-main hover:text-white"> ย้อนกลับ </button>
 
                                         ) : ""}
                                         {level <= 4 ? (
                                             <button type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ถัดไป  </button>
 
                                         ) : (
-                                            <button type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ยืนยันการสร้างชุดข้อมูล     </button>
+                                            <button onClick={create} type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ยืนยันการสร้างชุดข้อมูล     </button>
 
                                         )}
                                     </div>

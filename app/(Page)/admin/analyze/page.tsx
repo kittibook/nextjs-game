@@ -6,40 +6,15 @@ import ScoreChart from "@/app/Components/UI/admin/analyze/scoreChart";
 import UserChart from "@/app/Components/UI/admin/analyze/userChart";
 import UserLatest from "@/app/Components/UI/admin/analyze/userLatest";
 import dynamic from 'next/dynamic';
-import data from '@/app/Assets/Geo.json';
-import phayao01 from '@/app/Assets/phayao01.json';
-import phayao02 from '@/app/Assets/phayao02.json';
-import phayao03 from '@/app/Assets/phayao03.json';
-import phayao04 from '@/app/Assets/phayao04.json';
 import type { Feature, FeatureCollection } from 'geojson';
-import AnalyzeMap from "@/app/Components/UI/admin/analyze/analyzeMap";
+// import Map from "@/app/Components/UI/admin/analyze/map";
 import { useEffect, useState } from "react";
 import { getAuth } from "@/app/Services/api.service";
+import KhonKaenJson from '@/app/Assets/KhonKaen.json'
+import PhayaoJson from '@/app/Assets/Phayao.json'
 const Map = dynamic(() => import('@/app/Components/UI/admin/analyze/map'), { ssr: false });
 
-const geoData: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: [data as Feature], // ✅ OK
-};
 
-const geoDataphayao01: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: phayao01.features as Feature[], //  ภูซาง
-};
-
-const geoDataphayao02: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: phayao02.features as Feature[], // เชียงคำ
-};
-const geoDataphayao03: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: phayao03.features as Feature[], //  ปง
-};
-
-const geoDataphayao04: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: phayao04.features as Feature[], //  ปง
-};
 
 interface DataSet {
   Dataset_id: number,
@@ -93,31 +68,24 @@ export default function AdminAnalyze() {
           <div className="col-span-1  transition-all duration-300 p-9 lg:border-r border-[#C8CBD9] w-full  min-h-72 ">
             <UserChart dataSetId={dataSetSelect} />
           </div>
-          <div className="col-span-1 lg:col-span-2 lg:row-span-2 transition-all duration-300 p-9  w-full  min-h-72">
+          <div className="col-span-1 lg:col-span-2 lg:row-span-3 transition-all duration-300 p-9  w-full  min-h-72">
             <Map
-              geoData01={geoDataphayao01}
-              geoData02={geoDataphayao02}
-              geoData03={geoDataphayao03}
-              geoData04={geoDataphayao04}
-              geoData05={geoDataphayao01}
-              geoData06={geoDataphayao01}
-              geoData07={geoDataphayao01}
-              geoData08={geoDataphayao01}
+              dataSetId={dataSetSelect}
             />
 
           </div>
           <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
             <ScoreChart dataSetId={dataSetSelect}  />
           </div>
-          <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
+          {/* <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
             <RiskChart />
-          </div>
+          </div> */}
           <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <UserLatest />
+            <UserLatest dataSetId={dataSetSelect}  />
           </div>
-          <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
+          {/* <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
             <AnalyzeMap />
-          </div>
+          </div> */}
         </div>
       </div>
     </LayoutAdmin>
