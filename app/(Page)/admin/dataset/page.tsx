@@ -7,7 +7,7 @@ import LayoutAdmin from "@/app/Components/Layout/admin/admin";
 import { useEffect, useMemo, useState } from 'react';
 import TablePaginationActions from '@/app/Components/UI/admin/table/TablePaginationActions';
 import { useRouter } from 'next/navigation';
-import { getAuth } from '@/app/Services/api.service';
+import { getAuth, putAuth } from '@/app/Services/api.service';
 import { Feature, FeatureCollection, Polygon, MultiPolygon } from 'geojson';
 import thailand from '@/app/Assets/thailand.json';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -15,6 +15,7 @@ import { point as turfPoint } from '@turf/helpers';
 import ConfirmDeleteModal from '@/app/Components/UI/admin/dataset/Modal';
 
 interface DataSet {
+    Dataset_id: number
     Name: string
     Position: {
         latitude: string
@@ -23,6 +24,7 @@ interface DataSet {
     dateEnd: string
     dateStart: string
     details: string
+    status: string
 }
 
 export default function AdminDataSet() {
@@ -60,7 +62,7 @@ export default function AdminDataSet() {
     const fetchData = async () => {
         try {
             const res = await getAuth('/admin/dataset/')
-            console.log(res)
+            // console.log(res)
             setDataSet(res.dataSet)
         } catch (error) {
 
@@ -133,10 +135,26 @@ export default function AdminDataSet() {
     };
 
     const handleConfirmDelete = async () => {
-        // TODO: call API ลบ แล้วปิด modal
-        // await fetch(`/api/dataset/${row.id}`, { method: "DELETE" });
         setOpenDelete(false);
     };
+
+    const chengeStatus = async () => {
+        try {
+            handleClose();
+            const res = await putAuth('/admin/dataset/change/' + dataSetSelect?.Dataset_id, '')
+            // console.log(res)
+            if (res.success) {
+                fetchData()
+            }
+
+        } catch (error) {
+            console.log(' error : ', error)
+        }
+    }
+
+    const gotoEdit = () => {
+        router.push('/admin/dataset/edit/' + dataSetSelect?.Dataset_id)
+    }
 
 
     return (
@@ -172,6 +190,7 @@ export default function AdminDataSet() {
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">ระยะเวลาการเก็บข้อมูล</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">รายละเอียด</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">สถานที่</TableCell>
+                                        <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">สถานะ</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl" align="right">เพิ่มเติม</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -185,6 +204,8 @@ export default function AdminDataSet() {
                                             <TableCell>{formatDateThai(dataSet.dateStart)} - {formatDateThai(dataSet.dateEnd)}</TableCell>
                                             <TableCell>{dataSet.details}</TableCell>
                                             <TableCell>{getProvinceName(Number(dataSet.Position.latitude), Number(dataSet.Position.longitude))}</TableCell>
+                                            {/* <TableCell>{dataSet.status}</TableCell> */}
+                                            <TableCell>{dataSet.status === 'active' ? 'เปิดใช้งาน' : 'ปิดการใช้งาน' }</TableCell>
                                             <TableCell align="right">
                                                 <div className="flex items-center justify-end space-x-4">
                                                     <IconButton onClick={e => handleMenuClick(e, dataSet)}>
@@ -221,8 +242,8 @@ export default function AdminDataSet() {
                         </TableContainer>
 
                         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                            <MenuItem onClick={handleClose}>แก้ไข</MenuItem>
-                            {/* <MenuItem onClick={handleDeleteClick}>เปลี่ยนสถานะ</MenuItem> */}
+                            <MenuItem onClick={gotoEdit}>แก้ไข</MenuItem>
+                            <MenuItem onClick={chengeStatus}>เปลี่ยนสถานะ ปิด/เปิด การใช้งาน</MenuItem>
                             <MenuItem onClick={handleDeleteClick}>ลบ</MenuItem>
                         </Menu>
 
