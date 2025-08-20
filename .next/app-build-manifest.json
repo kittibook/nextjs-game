@@ -6,28 +6,17 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(Page)/admin/page": [
+    "/(Page)/admin/manageuser/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/page.css",
-      "static/chunks/app/(Page)/admin/page.js"
+      "static/css/app/(Page)/admin/manageuser/page.css",
+      "static/chunks/app/(Page)/admin/manageuser/page.js"
     ],
-    "/(Page)/admin/dataset/page": [
+    "/(Page)/admin/manageuser/detail/[userid]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/dataset/page.css",
-      "static/chunks/app/(Page)/admin/dataset/page.js"
-    ],
-    "/(Page)/admin/dataset/edit/[datasetid]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/dataset/edit/[datasetid]/page.css",
-      "static/chunks/app/(Page)/admin/dataset/edit/[datasetid]/page.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/css/app/(Page)/admin/manageuser/detail/[userid]/page.css",
+      "static/chunks/app/(Page)/admin/manageuser/detail/[userid]/page.js"
     ]
   }
 }

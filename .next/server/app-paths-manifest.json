@@ -1,5 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(Page)/admin/dataset/page": "app/(Page)/admin/dataset/page.js",
-  "/(Page)/admin/dataset/edit/[datasetid]/page": "app/(Page)/admin/dataset/edit/[datasetid]/page.js"
+  "/(Page)/admin/manageuser/page": "app/(Page)/admin/manageuser/page.js",
+  "/(Page)/admin/manageuser/detail/[userid]/page": "app/(Page)/admin/manageuser/detail/[userid]/page.js"
 }

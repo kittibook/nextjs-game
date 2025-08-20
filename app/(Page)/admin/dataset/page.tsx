@@ -153,9 +153,11 @@ export default function AdminDataSet() {
     }
 
     const gotoEdit = () => {
-        router.push('/admin/dataset/edit/' + dataSetSelect?.Dataset_id)
+        if(!dataSetSelect?.Dataset_id) return
+        router.push('/admin/dataset/edit/' + encodeId(dataSetSelect.Dataset_id.toString()))
     }
 
+    const encodeId = (id: string) => btoa(id);
 
     return (
         <LayoutAdmin>

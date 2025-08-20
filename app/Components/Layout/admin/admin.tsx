@@ -43,7 +43,7 @@ export default function LayoutAdmin({ children }: { children: ReactNode }) {
     return (
         <div className={`flex min-h-screen ${poppins.className}`}>
             <NavBar />
-            <div className="fixed top-0 left-0 min-h-screen w-15 md:w-64 bg-bgnavbar-2 pt-28 flex justify-center">
+            <div className="fixed top-0 left-0 min-h-full w-15 md:w-64 bg-bgnavbar-2 pt-28 flex justify-center">
                 <div className="space-y-4 w-full px-4">
                     {itemLink.map((value, index) => (
                         <NavItem item={value} key={index} />

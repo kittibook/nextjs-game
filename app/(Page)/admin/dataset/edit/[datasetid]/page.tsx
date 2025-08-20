@@ -1,12 +1,12 @@
 "use client"
 import LayoutAdmin from "@/app/Components/Layout/admin/admin";
 import { useEffect, useState } from "react";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs'
 import ProgressBarDataSet from "@/app/Components/UI/admin/dataset/ProgressBar.dataset";
 import { FormStepDataSet } from "@/app/Components/UI/admin/dataset/FormStep.dataset";
 import { PreviewCard } from "@/app/Components/UI/admin/dataset/PreviewCard.dataset";
 import { Bounce, toast } from "react-toastify";
-import { getAuth, postAuth } from "@/app/Services/api.service";
+import { getAuth, postAuth, putAuth } from "@/app/Services/api.service";
 import { useParams, useRouter } from "next/navigation";
 
 export default function DataSetCreate() {
@@ -20,6 +20,11 @@ export default function DataSetCreate() {
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
     const router = useRouter();
     const params = useParams()
+
+    const decodeId = (encodedId : string) => {
+        const id = decodeURIComponent(encodedId)
+        return atob(id)
+    };
 
     const fetchLocationFromStorage = () => {
         const lat = localStorage.getItem('latitude');
@@ -44,14 +49,45 @@ export default function DataSetCreate() {
 
     const fetchData = async () => {
         try {
-            const res = await getAuth('/admin/dataset/' + params.datasetid)
-            console.log(res)
-        } catch (error) {
+            if (!params.datasetid) return
+            const id = decodeId(params.datasetid as string);
+            const res = await getAuth('/admin/dataset/' + id)
+            if (res.success) {
+                const ds = res.dataSet as {
+                    Dataset_id: number
+                    Name: string
+                    details: string
+                    dateStart?: string | null
+                    dateEnd?: string | null
+                    Position: {
+                        latitude?: number | string | null
+                        longitude?: number | string | null
+                    }
+                    isdel?: 'active' | 'inactive'
+                    status?: 'active' | 'inactive'
+                }
 
+                setName(ds.Name ?? "")
+                setDetail(ds.details ?? "")
+
+                const s = dayjs(ds.dateStart)
+                const e = dayjs(ds.dateEnd)
+                setStartDate(s)
+                setEndDate(e)
+                setDateDefault(s)
+
+                const lat = typeof ds.Position.latitude === 'string' ? parseFloat(ds.Position.latitude) : ds.Position.latitude ?? null
+                const lng = typeof ds.Position.longitude === 'string' ? parseFloat(ds.Position.longitude) : ds.Position.longitude ?? null
+                setLatitude(Number.isFinite(lat as number) ? (lat as number) : null)
+                setLongitude(Number.isFinite(lng as number) ? (lng as number) : null)
+            }
+        } catch (error) {
+            console.error(error)
         }
     }
 
-    const create = async () => {
+
+    const edit = async () => {
         try {
             if (name === "" || detail === "" || startDate === null || endDate === null || latitude === null || longitude === null) {
                 return toast.warn('ข้อมูลไม่ครบถ้วน', {
@@ -77,7 +113,7 @@ export default function DataSetCreate() {
                     longitude: longitude.toString()
                 }
             }
-            const res = await postAuth('/admin/dataset/', body)
+            const res = await putAuth('/admin/dataset/' + params.datasetid, body)
 
             if (res.success) {
                 toast.success('สร้างสำเร็จ', {
@@ -104,7 +140,7 @@ export default function DataSetCreate() {
         <LayoutAdmin>
             <div className="min-h-screen w-full flex flex-col bg-gray-50">
                 <div className="flex justify-between items-center p-16 ">
-                    <h1 className="text-lg font-medium text-[#1F384C]">สร้างชุดข้อมูล</h1>
+                    <h1 className="text-lg font-medium text-[#1F384C]">แก้ไขชุดข้อมูล </h1>
                 </div>
                 <div className="flex justify-center items-center w-full ">
                     <div className={`${level > 4 ? "flex justify-center items-center bg-linear-to-b from-main/20" : ""} w-[90%] bg-bgnavbar-2 rounded-2xl flex`}>
@@ -152,7 +188,7 @@ export default function DataSetCreate() {
                                             <button type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ถัดไป  </button>
 
                                         ) : (
-                                            <button onClick={create} type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ยืนยันการสร้างชุดข้อมูล     </button>
+                                            <button onClick={edit} type="submit" className="p-4  bg-main/10 w-[70%] mx-2 rounded-2xl text-lx text-main hover:bg-main hover:text-white">ยืนยันการสร้างชุดข้อมูล     </button>
 
                                         )}
                                     </div>
@@ -177,3 +213,11 @@ export default function DataSetCreate() {
         </LayoutAdmin>
     )
 }
+
+function utc(option: unknown, c: typeof Dayjs, d: typeof dayjs): void {
+    throw new Error("Function not implemented.");
+}
+function timezone(option: unknown, c: typeof Dayjs, d: typeof dayjs): void {
+    throw new Error("Function not implemented.");
+}
+
