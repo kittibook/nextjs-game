@@ -91,7 +91,7 @@ export default function DataSetCreate() {
         <LayoutAdmin>
             <div className="min-h-screen w-full flex flex-col bg-gray-50">
                 <div className="flex justify-between items-center p-16 ">
-                    <h1 className="text-lg font-medium text-[#1F384C]">สร้างชุดข้อมูล</h1>
+                    <h1 className="text-2xl font-medium text-[#1F384C]">สร้างชุดข้อมูล</h1>
                 </div>
                 <div className="flex justify-center items-center w-full ">
                     <div className={`${level > 4 ? "flex justify-center items-center bg-linear-to-b from-main/20" : ""} w-[90%] bg-bgnavbar-2 rounded-2xl flex`}>

@@ -6,17 +6,29 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/(Page)/admin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(Page)/admin/page.css",
+      "static/chunks/app/(Page)/admin/page.js"
+    ],
+    "/(Page)/admin/settings/game/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(Page)/admin/settings/game/page.css",
+      "static/chunks/app/(Page)/admin/settings/game/page.js"
+    ],
     "/(Page)/admin/manageuser/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/(Page)/admin/manageuser/page.css",
       "static/chunks/app/(Page)/admin/manageuser/page.js"
     ],
-    "/(Page)/admin/manageuser/detail/[userid]/page": [
+    "/(Page)/admin/settings/game/[settingid]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(Page)/admin/manageuser/detail/[userid]/page.css",
-      "static/chunks/app/(Page)/admin/manageuser/detail/[userid]/page.js"
+      "static/css/app/(Page)/admin/settings/game/[settingid]/page.css",
+      "static/chunks/app/(Page)/admin/settings/game/[settingid]/page.js"
     ]
   }
 }

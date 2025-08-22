@@ -45,7 +45,7 @@ export default function AdminAnalyze() {
     <LayoutAdmin>
       <div className="min-h-screen min-w-[100%] flex flex-col pt-15 pl-5">
         <div className="flex justify-between items-center  ">
-          <h1 className="text-lg font-medium text-[#1F384C]">วิเคราะห์ข้อมูล</h1>
+          <h1 className="text-2xl font-medium text-[#1F384C]">วิเคราะห์ข้อมูล</h1>
         </div>
         <select
           // disabled

@@ -7,6 +7,7 @@ import { Poppins } from 'next/font/google';
 import NavBar from "@/app/Components/UI/admin/Navbar";
 import { ToastContainer } from 'react-toastify';
 import { usePathname } from "next/navigation";
+import { IoSettings } from "react-icons/io5";
 const poppins = Poppins({ subsets: ['latin'], weight: ['400'] });
 
 export default function LayoutAdmin({ children }: { children: ReactNode }) {
@@ -33,10 +34,16 @@ export default function LayoutAdmin({ children }: { children: ReactNode }) {
             icon: <HiUser size={24} />,
         },
         {
+            title: "จัดการเกม",
+            to: "/admin/settings/game",
+            icon: <IoSettings size={24} />,
+        },
+        {
             title: "จัดการข้อมูลผู้ดูแลระบบ",
             to: "/admin/manageadmin",
             icon: <HiUserCircle size={24} />,
         },
+        
 
 
     ]

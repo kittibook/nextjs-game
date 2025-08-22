@@ -1,4 +1,6 @@
 {
+  "/(Page)/admin/page": "app/(Page)/admin/page.js",
+  "/(Page)/admin/settings/game/page": "app/(Page)/admin/settings/game/page.js",
   "/(Page)/admin/manageuser/page": "app/(Page)/admin/manageuser/page.js",
-  "/(Page)/admin/manageuser/detail/[userid]/page": "app/(Page)/admin/manageuser/detail/[userid]/page.js"
+  "/(Page)/admin/settings/game/[settingid]/page": "app/(Page)/admin/settings/game/[settingid]/page.js"
 }
