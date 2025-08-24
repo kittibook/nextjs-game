@@ -9,7 +9,7 @@ export const getAuth = async (url: string): Promise<any> => {
         headers: Config.headers()
     })
     if (response.status === 401 || response.status === 403) {
-        window.location.href = '/login';
+        window.location.href = '/';
         return;
     }
     const res = await response.json()
@@ -26,7 +26,7 @@ export const postAuth = async (url: string, body: any): Promise<any> => {
         body: JSON.stringify(body)
     })
     if (response.status === 401 || response.status === 403) {
-        window.location.href = '/login';
+        window.location.href = '/';
         return;
     }
     const res = await response.json()
@@ -43,7 +43,23 @@ export const putAuth = async (url: string, body: any): Promise<any> => {
         body: JSON.stringify(body)
     })
     if (response.status === 401 || response.status === 403) {
-        window.location.href = '/login';
+        window.location.href = '/';
+        return;
+    }
+    const res = await response.json()
+    return res
+}
+
+export const putAuthFormData = async (url: string, body: any): Promise<any> => {
+    const response = await fetch(Config.url + url, {
+        method: "PUT",
+        headers: {
+            ...Config.headers()
+        },
+        body: body
+    })
+    if (response.status === 401 || response.status === 403) {
+        window.location.href = '/';
         return;
     }
     const res = await response.json()

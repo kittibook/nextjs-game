@@ -113,7 +113,7 @@ export default function DataSetCreate() {
                     longitude: longitude.toString()
                 }
             }
-            const res = await putAuth('/admin/dataset/' + params.datasetid, body)
+            const res = await putAuth('/admin/dataset/' + decodeId(params.datasetid as string), body)
 
             if (res.success) {
                 toast.success('สร้างสำเร็จ', {

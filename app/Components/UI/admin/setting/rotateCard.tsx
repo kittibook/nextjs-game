@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 
-
-export default function RotateCard() {
+interface Prop {
+    Front? : string
+    NumFront? : string
+    Back? : string
+}
+export default function RotateCard(prop : Prop) {
     const [deg, setDeg] = useState(180);
 
     return (
@@ -27,8 +31,9 @@ export default function RotateCard() {
                                             bg-white text-black font-semibold
                                             [backface-visibility:hidden]
                                         `}
+                                        style={{ background: prop.Front ?? '#ffffff' }} 
                     >
-
+                    {prop.NumFront ? prop.NumFront : ''}
                     </div>
 
                     <div
@@ -39,7 +44,7 @@ export default function RotateCard() {
                                         `}
                     >
                         <img
-                            src="https://apigamenewversion.bxok.online/public/image/Background-Card.png"
+                            src={prop.Back}
                             alt="Card Back"
                             className="w-full h-full object-cover"
                         />

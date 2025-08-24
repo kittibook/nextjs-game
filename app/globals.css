@@ -1,14 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui";
 @theme {
-  --color-main: #5A67BA;
-  --color-main-1: #707FDD;
-  --color-main-2: #DDE4F0;
-  --color-btn-dashboard: #FBFCFE;
+  --color-main: #5a67ba;
+  --color-main-1: #707fdd;
+  --color-main-2: #dde4f0;
+  --color-btn-dashboard: #fbfcfe;
   --color-bgnavbar-1: #8998fb;
-  --color-bgnavbar-2: #F1F2F7;
-  --color-data-set: #6D5BD0;
-  --color-data-set-bg: #F4F2FF;
+  --color-bgnavbar-2: #f1f2f7;
+  --color-data-set: #6d5bd0;
+  --color-data-set-bg: #f4f2ff;
 }
 
 :root {
@@ -34,4 +34,58 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.fade-up-in {
+  animation: fade-up-in 0.35s ease-out forwards;
+}
+.fade-up-out {
+  animation: fade-up-out 0.25s ease-in forwards;
+}
+.fade-down-in {
+  animation: fade-down-in 0.35s ease-out forwards;
+}
+.fade-down-out {
+  animation: fade-down-out 0.25s ease-in forwards;
+}
+
+@keyframes fade-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-up-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes fade-down-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-down-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
