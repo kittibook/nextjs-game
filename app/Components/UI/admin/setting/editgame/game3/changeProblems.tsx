@@ -36,7 +36,7 @@ export default function ChangeProblemsGame3(prop: Prop) {
                 console.log(detail)
 
                 setProblems(JSON.parse(detail.problems))
-                setImageUrl(Config.url + detail.url)
+                setImageUrl(Config.image + detail.url)
             }
         })
     }
@@ -132,7 +132,7 @@ export default function ChangeProblemsGame3(prop: Prop) {
                                         <div className="w-1 h-2 bg-main absolute bottom-0 left-0"></div>
                                         <input
                                             type="text"
-                                            className=""
+                                            className=" w-full"
                                             value={problems}
                                         onChange={e => handleChange(index, e.target.value)}
                                         />

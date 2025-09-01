@@ -1,6 +1,6 @@
 import { getAuth } from "@/app/Services/api.service";
 import { useEffect, useState } from "react";
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 // กราฟ ผู้เข้าร่วมการประเมินนะจ๊ะ
 interface Data {
@@ -66,21 +66,24 @@ export default function UserChart() {
                     <h2 className="text-lg font-semibold text-slate-700">
                         ผู้เข้าร่วมการประเมิน
                     </h2>
-                    <h3 className="text-sm text-slate-500">
+                    {/* <h3 className="text-sm text-slate-500">
                         วันที่ 1 ธันวาคม  2567 - 25 มกราคม 2568
-                    </h3>
+                    </h3> */}
                 </div>
 
-                <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main">View Report</button>
+                {/* <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main">View Report</button> */}
             </div>
             <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="DatasetName" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line
+                    <Bar dataKey="userM" name='ชาย' fill="#8884d8" />
+                    <Bar dataKey="userF" name='หญิง' fill="#82ca9d" />
+                    
+                    {/* <Line
                         type="monotone"
                         dataKey="userM"
                         name="ชาย"
@@ -91,8 +94,8 @@ export default function UserChart() {
                         dataKey="userF"
                         name="หญิง"
                         stroke="#82ca9d"
-                    />
-                </LineChart>
+                    /> */}
+                </BarChart>
             </ResponsiveContainer>
         </>
     )

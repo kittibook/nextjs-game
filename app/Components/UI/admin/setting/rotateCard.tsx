@@ -33,7 +33,12 @@ export default function RotateCard(prop : Prop) {
                                         `}
                                         style={{ background: prop.Front ?? '#ffffff' }} 
                     >
+                        <div
+                            className={`card-front bg-white  ${prop.Front ? 'text-lg' : 'text-9xl'} font-bold font-mali text-blue-500`}
+                          >
                     {prop.NumFront ? prop.NumFront : ''}
+
+                          </div>
                     </div>
 
                     <div

@@ -36,7 +36,7 @@ export default function AdminUser() {
     const handleClose = () => setAnchorEl(null)
     const router = useRouter();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -56,6 +56,7 @@ export default function AdminUser() {
     const [dataSetSelect, setDataSetSelect] = useState<number | null>(null)
     const [user, setUser] = useState<User[] | []>([])
     const [search, setSearch] = useState<string>('')
+    const [criterion, setcCiterion] = useState<number>(0)
 
     const filteredData = useMemo(() => {
         return user.filter(item =>
@@ -65,6 +66,7 @@ export default function AdminUser() {
 
     useEffect(() => {
         fetchData()
+        fetchCriterion()
     }, [])
 
     const fetchData = async () => {
@@ -72,6 +74,16 @@ export default function AdminUser() {
             const res = await getAuth('/admin/analyze/namedataset')
             if (res.success) {
                 setDataSet(res.dataSet)
+            }
+        } catch (error) {
+        }
+    }
+
+     const fetchCriterion = async () => {
+        try {
+            const res = await getAuth('/admin/user/criterion')
+            if (res.success) {
+                setcCiterion(res.criterion)
             }
         } catch (error) {
         }
@@ -153,6 +165,7 @@ export default function AdminUser() {
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">อายุ</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">โรคประจำตัว</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">คะแนน</TableCell>
+                                        <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">MCI</TableCell>
                                         <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl" align="right">เพิ่มเติม</TableCell>
                                     </TableRow>
 
@@ -167,6 +180,7 @@ export default function AdminUser() {
                                             <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{user.age}</TableCell>
                                             <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{user.disease}</TableCell>
                                             <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{user.score}</TableCell>
+                                            <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{ Number(user.score) >= criterion ? <p className="p-2 bg-green-200 rounded-2xl text-center">ไม่เป็น MCI</p> : <p className="p-2 bg-red-200 rounded-2xl text-center">เป็น MCI</p>}</TableCell>
                                             <TableCell className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl" align="right">
                                                 <div className="flex items-center justify-end space-x-0 lg:space-x-4">
                                                     <span onClick={e => router.push('/admin/manageuser/detail/' + encodeId(user.User_id as unknown as string))} className="text-main cursor-pointer">View More</span>

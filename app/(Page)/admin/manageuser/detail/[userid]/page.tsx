@@ -4,7 +4,7 @@ import LayoutAdmin from "@/app/Components/Layout/admin/admin"
 import LoadingOverlay from "@/app/Components/UI/admin/LoadingOverlay";
 import { getAuth } from "@/app/Services/api.service";
 import { Game, User } from "@/app/Types/admin";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoChevronForward } from "react-icons/io5";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -13,6 +13,7 @@ export default function UserDetail() {
 
     const params = useParams()
     const router = useRouter();
+    const pathname = usePathname()
 
     const decodeId = (encodedId: string) => {
         const id = decodeURIComponent(encodedId)
@@ -34,13 +35,25 @@ export default function UserDetail() {
         }
     ]
 
-    const [user, setUser] = useState<User | null>()
+    const [user, setUser] = useState<User | null>(null)
     const [game, setGame] = useState<Game[] | []>([])
     const [loading, setLoading] = useState(true);
+    const [criterion, setcCiterion] = useState<number>(0)
 
     useEffect(() => {
         fetchData()
-    },[])
+        fetchCriterion()
+    }, [])
+
+    const fetchCriterion = async () => {
+        try {
+            const res = await getAuth('/admin/user/criterion')
+            if (res.success) {
+                setcCiterion(res.criterion)
+            }
+        } catch (error) {
+        }
+    }
 
     const fetchData = async () => {
         try {
@@ -79,6 +92,7 @@ export default function UserDetail() {
 
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 mt-5 w-full h-full">
+
                         <div className="col-span-1 transition-all duration-300 border-b lg:border-r border-[#C8CBD9] w-full  min-h-84 ">
                             <div className="flex justify-center items-center w-full h-full">
                                 <div className=" flex flex-col gap-y-4 ">
@@ -102,6 +116,13 @@ export default function UserDetail() {
                                     </div>
 
                                     <div className="flex gap-x-4">
+                                        <h1 className="text-lg lg:text-2xl font-bold text-black/70">MCI</h1>
+                                        {Number(user?.score) >= criterion ? <p className="p-2 bg-green-200 rounded-2xl text-center">ไม่เป็น MCI</p> : <p className="p-2 bg-red-200 rounded-2xl text-center">เป็น MCI</p>}
+
+                                    </div>
+
+
+                                    <div className="flex gap-x-4">
                                         <h1 className="text-lg lg:text-2xl font-bold text-black/70">เวลาเฉลี่ย</h1>
                                         <h1 className="text-lg lg:text-2xl font-bold text-black">{user?.time}</h1>
                                         <h1 className="text-lg lg:text-2xl font-bold text-black">นาที</h1>
@@ -112,37 +133,24 @@ export default function UserDetail() {
                             </div>
                         </div>
 
-
-                        <div className="col-span-1 row-span-2 transition-all duration-300 lg:border-r border-[#C8CBD9] w-full  min-h-84  border-b lg:border-b-0">
+                        <div className="col-span-1  transition-all duration-300 lg:border-r border-[#C8CBD9] w-full  min-h-84  border-b ">
                             <div className="p-3">
                                 <div className="flex justify-between items-center mb-10">
                                     <div className="flex flex-col">
                                         <h2 className="text-2xl font-semibold text-slate-700">
-                                            คะแนนที่ทำได้ในแต่ละเกม
+                                            ผลการประเมิน
                                         </h2>
                                     </div>
-                                    <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main hover:bg-main hover:text-btn-dashboard">ดูการเล่นเกม</button>
+                                    {/* <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main hover:bg-main hover:text-btn-dashboard">ดูการเล่นเกม</button> */}
                                 </div>
                                 <div className="flex justify-center items-center w-full">
-                                    <div className="w-[90%]">
-                                        {game.length > 0 && (
-                                            <>{game.map((game) => (
-                                                <div key={game.Game_id} className="flex justify-between items-center gap-x-4 border-b border-[#C8CBD9] w-full hover:bg-main/20 p-2 hover:rounded-2xl">
-                                                    <div>
-                                                        <h1 className="text-lg lg:text-3xl font-medium text-main">{game.name}</h1>
-                                                    </div>
-                                                    <div className="flex flex-col items-end">
-                                                        <h1 className="text-lg lg:text-3xl font-medium text-main"> {game.score} คะแนน</h1>
-                                                        <h1 className="text-sm lg:text-lg font-medium text-main/70">เวลาที่ใช้  {game.time} นาที</h1>
-                                                    </div>
-                                                </div>
-                                            ))}</>
-                                        )}
-
-                                    </div>
+                                    { Number(user?.score) >= criterion ? <div className="p-2 bg-green-200 w-64 h-64 rounded-full flex justify-center items-center text-5xl font-bold">ไม่เป็น MCI</div> : <div className="p-2 bg-red-200 w-64 h-64 rounded-full flex justify-center items-center text-5xl font-bold">เป็น MCI</div>}
                                 </div>
                             </div>
                         </div>
+
+
+
 
                         <div className="col-span-1 transition-all duration-300 lg:border-r border-[#C8CBD9] lg:border-b-0 w-full  min-h-84  border-b">
                             <div className="px-3">
@@ -170,6 +178,37 @@ export default function UserDetail() {
                                         </LineChart>
                                     </ResponsiveContainer>
 
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-span-1 transition-all duration-300 lg:border-r border-[#C8CBD9] w-full  min-h-84  border-b lg:border-b-0">
+                            <div className="p-3">
+                                <div className="flex justify-between items-center mb-10">
+                                    <div className="flex flex-col">
+                                        <h2 className="text-2xl font-semibold text-slate-700">
+                                            คะแนนที่ทำได้ในแต่ละเกม
+                                        </h2>
+                                    </div>
+                                    <button onClick={e => router.push(pathname + '/games/replay')} className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main hover:bg-main hover:text-btn-dashboard">ดูการเล่นเกม</button>
+                                </div>
+                                <div className="flex justify-center items-center w-full">
+                                    <div className="w-[90%]">
+                                        {game.length > 0 && (
+                                            <>{game.map((game) => (
+                                                <div key={game.Game_id} className="flex justify-between items-center gap-x-4 border-b border-[#C8CBD9] w-full hover:bg-main/20 p-2 hover:rounded-2xl">
+                                                    <div>
+                                                        <h1 className="text-lg lg:text-3xl font-medium text-main">{game.name}</h1>
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <h1 className="text-lg lg:text-3xl font-medium text-main"> {game.score} คะแนน</h1>
+                                                        <h1 className="text-sm lg:text-lg font-medium text-main/70">เวลาที่ใช้  {game.time} นาที</h1>
+                                                    </div>
+                                                </div>
+                                            ))}</>
+                                        )}
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -36,7 +36,7 @@ export default function MenuGame2(prop: Prop) {
                                     //     alt="Card Back"
                                     //     className="object-cover rounded-2xl"
                                     // />
-                                    <RotateCard Back={Config.url + detail.url} />
+                                    <RotateCard Back={Config.image + detail.url} />
                                 )}
                             </div>
                         ))}

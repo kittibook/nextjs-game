@@ -36,7 +36,7 @@ export default function ChangeProblemsGame2(prop: Prop) {
                 console.log(detail)
 
                 setProblems(JSON.parse(detail.problems))
-                setImageUrl(Config.url + detail.url)
+                setImageUrl(Config.image + detail.url)
             }
         })
     }

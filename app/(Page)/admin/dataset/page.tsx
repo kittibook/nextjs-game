@@ -33,7 +33,7 @@ export default function AdminDataSet() {
     const handleClose = () => setAnchorEl(null)
     const router = useRouter();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [dataSet, setDataSet] = useState<DataSet[] | []>([])
     const [search, setSearch] = useState<string>('')
     const [menuEl, setMenuEl] = useState<null | HTMLElement>(null);
@@ -207,7 +207,7 @@ export default function AdminDataSet() {
                                             <TableCell>{dataSet.details}</TableCell>
                                             <TableCell>{getProvinceName(Number(dataSet.Position.latitude), Number(dataSet.Position.longitude))}</TableCell>
                                             {/* <TableCell>{dataSet.status}</TableCell> */}
-                                            <TableCell>{dataSet.status === 'active' ? 'เปิดใช้งาน' : 'ปิดการใช้งาน' }</TableCell>
+                                            <TableCell>{dataSet.status === 'active' ? <p className='bg-green-200 p-2 rounded-2xl text-center'>เปิดใช้งาน</p> : <p className='bg-red-200 p-2 rounded-2xl text-center'>ปิดการใช้งาน</p> }</TableCell>
                                             <TableCell align="right">
                                                 <div className="flex items-center justify-end space-x-4">
                                                     <IconButton onClick={e => handleMenuClick(e, dataSet)}>

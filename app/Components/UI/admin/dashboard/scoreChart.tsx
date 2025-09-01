@@ -29,9 +29,9 @@ export default function ScoreChart() {
                     <h2 className="text-lg font-semibold text-slate-700">
                         การได้คะแนนจากเกม
                     </h2>
-                    <h3 className="text-sm text-slate-500">
+                    {/* <h3 className="text-sm text-slate-500">
                         วันที่ 1 ธันวาคม  2567 - 25 มกราคม 2568
-                    </h3>
+                    </h3> */}
                 </div>
             </div>
             <div className="flex justify-between items-center w-full">

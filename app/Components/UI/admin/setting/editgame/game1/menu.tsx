@@ -31,7 +31,7 @@ export default function MenuGame1(prop: Prop) {
                             <div key={detail.url}>
                                 {detail.position === "ImageDemo" && (
                                     <img
-                                        src={Config.url + detail.url}
+                                        src={Config.image + detail.url}
                                         alt="Card Back"
                                         className="w-full h-full object-cover rounded-2xl"
                                     />

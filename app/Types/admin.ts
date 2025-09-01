@@ -15,14 +15,17 @@ export interface Game {
     name: string
     problems: any
     score: number
-    time: number
+    time: string
 }
 
 export interface GameDetail {
-    answer: string
-    ismatch: boolean
-    problems: string
-    reply: string
+    url : string | null
+    answer: string | null
+    ismatch: boolean | null
+    problems: string | null
+    reply: string | null
+    score : number | null 
+    time : string | null
 }
 
 export interface User {

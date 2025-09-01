@@ -34,7 +34,7 @@ export default function ChangeImageGame1(prop: Prop) {
         prop.detail.map((detail) => {
             if (detail.position === "ImageDemo") {
                 setDetail(detail)
-                setImageUrl(Config.url + detail.url)
+                setImageUrl(Config.image + detail.url)
             }
         })
     }
@@ -141,7 +141,7 @@ export default function ChangeImageGame1(prop: Prop) {
                             <input
                                 type="file"
                                 accept="image/*"
-                                className=""
+                                className=" w-full"
                                 onChange={handleChange}
                             />
                         </div>

@@ -1,5 +1,1 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(Page)/admin/settings/game/[settingid]/page": "app/(Page)/admin/settings/game/[settingid]/page.js",
-  "/(Page)/admin/settings/game/page": "app/(Page)/admin/settings/game/page.js"
-}
+{}

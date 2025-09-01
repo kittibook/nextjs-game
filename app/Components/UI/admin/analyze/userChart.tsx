@@ -1,6 +1,6 @@
 import { getAuth } from "@/app/Services/api.service";
 import { useEffect, useState } from "react";
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 // กราฟ ผู้เข้าร่วมการประเมิน
 interface Data {
@@ -12,9 +12,15 @@ interface Data {
 interface Prop {
     dataSetId: number | null
 }
+interface dataNew {
+    name: string
+    value: number
+}
 export default function UserChart({ dataSetId }: Prop) {
 
-    const [data, setData] = useState<Data[] | []>([])
+    const [data, setData] = useState<dataNew[] | []>([])
+    const COLORS = ["#8884d8", "#82ca9d"]
+    
     useEffect(() => {
         fetchData()
     }, [dataSetId])
@@ -24,23 +30,10 @@ export default function UserChart({ dataSetId }: Prop) {
             const res = await getAuth('/admin/analyze/user/' + dataSetId)
             console.log(res)
             if (res.success) {
-                let newData = res.data as Data[]
-                if (newData.length === 1) {
-                    const start: Data = {
-                        DatasetId: 0,
-                        DatasetName: "",
-                        userF: 0,
-                        userM: 0
-                    }
-                    newData = [start, ...newData]
-                    const end: Data = {
-                        DatasetId: 0,
-                        DatasetName: "",
-                        userF: 0,
-                        userM: 0
-                    }
-                    newData = [...newData, end]
-                }
+                let newData = [
+                    { name: "ชาย", value: res.data[0].userM },
+                    { name: "หญิง", value: res.data[0].userF },
+                ];
 
                 setData(newData)
 
@@ -57,33 +50,39 @@ export default function UserChart({ dataSetId }: Prop) {
                     <h2 className="text-lg font-semibold text-slate-700">
                         ผู้เข้าร่วมการประเมิน
                     </h2>
-                    <h3 className="text-sm text-slate-500">
-                        วันที่ 1 ธันวาคม  2567 - 25 มกราคม 2568
-                    </h3>
                 </div>
 
-                <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main">View Report</button>
+                {/* <button className="text-sm  bg-btn-dashboard border border-main-2 rounded p-2 text-main">View Report</button> */}
             </div>
             <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                {/* <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="DatasetName" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line
-                        type="monotone"
-                        dataKey="userM"
-                        name="ชาย"
-                        stroke="#8884d8"
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="userF"
-                        name="หญิง"
-                        stroke="#82ca9d"
-                    />
-                </LineChart>
+                    <Bar dataKey="userM" name='ชาย' fill="#8884d8" />
+                    <Bar dataKey="userF" name='หญิง' fill="#82ca9d" />
+                    
+                </BarChart> */}
+
+                <PieChart>
+                    <Pie
+                        data={data}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        label={({ name, value }) => `${name} : ${value} ท่าน`}
+                    >
+                        {data.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
             </ResponsiveContainer>
         </>
     )

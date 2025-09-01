@@ -51,9 +51,9 @@ export default function AdminAnalyze() {
           // disabled
           id="countries_disabled"
           value={dataSetSelect ?? 0}
-          onChange={ e => setDataSetSelect(Number(e.target.value))}
+          onChange={e => setDataSetSelect(Number(e.target.value))}
           className=" w-[30%] bg-btn-dashboard border border-main-2 text-main  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-5"
-          // defaultValue={0} // ใช้ defaultValue แทน selected
+        // defaultValue={0} // ใช้ defaultValue แทน selected
         >
           <option value={0}>เลือกชุดข้อมูล</option>
           {dataSet.length > 0 ? <>
@@ -65,27 +65,25 @@ export default function AdminAnalyze() {
 
         </select>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
-          <div className="col-span-1  transition-all duration-300 p-9 lg:border-r border-[#C8CBD9] w-full  min-h-72 ">
+          <div className="col-span-2  transition-all duration-300 p-9 lg:border-r border-[#C8CBD9] w-full  min-h-72 ">
             <UserChart dataSetId={dataSetSelect} />
           </div>
-          <div className="col-span-1 lg:col-span-2 lg:row-span-3 transition-all duration-300 p-9  w-full  min-h-72">
+          <div className="col-span-1  transition-all duration-300 p-9  w-full  min-h-72">
+            <RiskChart
+              dataSetId={dataSetSelect}
+            />
+          </div>
+          <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
+            <ScoreChart dataSetId={dataSetSelect} />
+          </div>
+          <div className="col-span-1 lg:col-span-2 lg:row-span-2 transition-all duration-300 p-9  w-full  min-h-72">
             <Map
               dataSetId={dataSetSelect}
             />
-
           </div>
           <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <ScoreChart dataSetId={dataSetSelect}  />
+            <UserLatest dataSetId={dataSetSelect} />
           </div>
-          {/* <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <RiskChart />
-          </div> */}
-          <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <UserLatest dataSetId={dataSetSelect}  />
-          </div>
-          {/* <div className="col-span-1 transition-all duration-300 p-9  w-full  min-h-72 lg:border-r border-main-2">
-            <AnalyzeMap />
-          </div> */}
         </div>
       </div>
     </LayoutAdmin>

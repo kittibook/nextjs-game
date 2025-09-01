@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-main/20">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-white">
       <div className="bg-main/50 p-8 rounded-2xl shadow-lg w-80">
         <h2 className="text-xl font-bold text-white text-center mb-6">เข้าสู่ระบบ</h2>
 
@@ -78,7 +78,7 @@ export default function Home() {
 
         <button
           onClick={login}
-          className="w-full py-2 rounded-lg bg-main text-white font-bold hover:opacity-90 transition"
+          className="w-full py-2 rounded-lg bg-green-500 text-white font-bold hover:opacity-90 transition"
         >
           ➜ เข้าสู่ระบบ
         </button>

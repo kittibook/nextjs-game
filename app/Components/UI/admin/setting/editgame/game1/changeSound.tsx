@@ -36,7 +36,7 @@ export default function ChangeSoundGame1(prop: Prop) {
         prop.detail.map((detail) => {
             if (detail.position === "Sound") {
                 setDetail(detail)
-                setImageUrl(Config.url + detail.url)
+                setImageUrl(Config.image + detail.url)
             }
         })
     }
@@ -149,7 +149,7 @@ export default function ChangeSoundGame1(prop: Prop) {
                 <div className="flex flex-col gap-2">
                     <div className="w-full flex justify-center">
                         <FaVolumeUp
-                            onClick={e => playAudio(Config.url + detail?.url)}
+                            onClick={e => playAudio(Config.image + detail?.url)}
                             className="text-blue-500 text-lg md:text-2xl w-48 h-48"
                         />
                     </div>
@@ -169,7 +169,7 @@ export default function ChangeSoundGame1(prop: Prop) {
                             <input
                                 type="file"
                                 accept="audio/*"
-                                className=""
+                                className=" w-full"
                                 onChange={handleChange}
                             />
                         </div>
